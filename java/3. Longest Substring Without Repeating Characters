@@ -1,0 +1,55 @@
+Given a string, find the length of the longest substring without repeating characters.
+
+Examples:
+
+Given "abcabcbb", the answer is "abc", which the length is 3.
+
+Given "bbbbb", the answer is "b", with the length of 1.
+
+Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+我的代码(最后一个测试数超时)：
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s.length()==0||s==null)
+            return 0;
+        int length=s.length();
+        char[] a=s.toCharArray();
+        int max=1;
+        for(int i=0;i<length-1;i++){
+            char[] part=new char[length-i];
+            part[0]=a[i];
+            int num=1;
+            for(int j=i+1;j<length;j++){
+                if(!exit(part,a[j])){
+                    part[num++]=a[j];
+                    if(num>max) max=num;
+                }
+                else break;
+            }
+        }
+        return max;
+    }
+    
+    boolean exit(char[] x,char y){
+        for(int i=0;i<x.length;i++)
+            if(x[i]==y)
+                return true;
+        return false;
+    }
+   
+}
+
+讨论版：
+ public int lengthOfLongestSubstring(String s) {
+        if (s.length()==0) return 0;
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        int max=0;
+        for (int i=0, j=0; i<s.length(); ++i){
+            if (map.containsKey(s.charAt(i))){
+                j = Math.max(j,map.get(s.charAt(i))+1);//重复出现的字母取位置最大的（abcdedc）c重复的时候j的值仍然是d+1
+            }
+            map.put(s.charAt(i),i);
+            max = Math.max(max,i-j+1);
+        }
+        return max;
+    }
