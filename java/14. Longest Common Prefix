@@ -1,0 +1,50 @@
+Write a function to find the longest common prefix string amongst an array of strings.
+我的代码：
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if(strs.length==0) return "";
+        for(int i=0;i<strs[0].length();i++){
+            char a=strs[0].charAt(i);//从第一个字符算起
+            for(int j=1;j<strs.length;j++)
+                if(i>=strs[j].length()||strs[j].charAt(i)!=a){//如果越界或者不相等，则返回str[0]i个字符前的结果
+                    char[] result=new char[i];
+                    for(int k=0;k<i;k++)
+                        result[k]=strs[0].charAt(k);
+                    return String.valueOf(result);
+                }
+        }
+        return strs[0];
+    }
+}
+
+讨论版：
+1、
+public String longestCommonPrefix(String[] strs) {
+    if (strs.length == 0) return "";
+    String pre = strs[0];
+    for (int i = 1; i < strs.length; i++)
+        while(strs[i].indexOf(pre) != 0)//比较字符和第一个字符匹配位置不为0，即不为初始位置
+            pre = pre.substring(0,pre.length()-1);//减一个字符在进行比较
+    return pre;
+}
+2、
+    public String longestCommonPrefix(String[] strs) {
+        StringBuilder result = new StringBuilder();
+        
+        if (strs!= null && strs.length > 0){
+        
+            Arrays.sort(strs);//对字符串进行排序
+            
+            char [] a = strs[0].toCharArray();//取第一个字符串
+            char [] b = strs[strs.length-1].toCharArray();//取最后一个字符串
+            
+            for (int i = 0; i < a.length; i ++){
+                if (b.length > i && b[i] == a[i]){//感觉b.length > i没有必要，因为a.length<=b.length,当i=a.length的时候不会进行循环
+                    result.append(b[i]);
+                }
+                else {
+                    return result.toString();
+                }
+            }
+        return result.toString();
+    }
