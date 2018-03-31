@@ -1,0 +1,27 @@
+Determine whether an integer is a palindrome. Do this without extra space.
+我的代码：
+class Solution {
+    public boolean isPalindrome(int x) {
+        if(x<0) return false;
+        int y=x;
+        int result=0;
+        while(x!=0){
+            int sum=result*10+x%10;
+            if(sum/10!=result) return false;
+            result=sum;
+            x/=10;
+        }
+        return y==result;
+    }
+}
+
+讨论版：
+public boolean isPalindrome(int x) {
+    if (x<0 || (x!=0 && x%10==0)) return false;
+    int rev = 0;
+    while (x>rev){
+    	rev = rev*10 + x%10;
+    	x = x/10;
+    }
+    return (x==rev || x==rev/10);//判断一半的数，如果数字长度为单12321，则12==123/10=true，双123321，则123==123=true
+}
