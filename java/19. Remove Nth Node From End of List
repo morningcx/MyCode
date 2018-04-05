@@ -1,0 +1,64 @@
+Given a linked list, remove the nth node from the end of list and return its head.
+
+For example,
+
+   Given linked list: 1->2->3->4->5, and n = 2.
+
+   After removing the second node from the end, the linked list becomes 1->2->3->5.
+Note:
+Given n will always be valid.
+Try to do this in one pass.
+
+My Code:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode begin=new ListNode(0);
+        begin.next=head;//创建一个头结点后接head
+        List<ListNode> list=new ArrayList<>();
+        int num=1;
+        list.add(begin);
+        while(head!=null){
+            list.add(head);
+            num++;
+            head=head.next;
+        }
+        list.get(num-n-1).next=list.get(num-n).next;
+        return begin.next;
+    }
+}
+
+After discuss:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode one=head;
+        ListNode two=head;
+        for(int i=0;i<n;i++){
+            if(one.next==null)
+                return head.next;
+            one=one.next;
+        }
+        while(one.next!=null){//移动num-n个，即倒数n个
+            one=one.next;
+            two=two.next;
+        }
+        ListNode three=two.next.next;
+        two.next=three;
+        return head;
+    }
+}
