@@ -1,0 +1,56 @@
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+For example, given n = 3, a solution set is:
+
+[
+  "((()))",
+  "(()())",
+  "(())()",
+  "()(())",
+  "()()()"
+]
+
+My code:（自己的方法）
+class Solution {
+    public List<String> generateParenthesis(int n) {
+		Set<String> set=new HashSet<>();
+		set.add("()");
+		return new ArrayList<>(calculate(set, n, 0));
+    }
+    public Set<String> calculate(Set<String> set,int n,int count){
+		if (count==n-1) {
+			return set;
+		}
+		Set<String> set2=new HashSet<>();
+		for(String string:set){
+			StringBuilder sBuilder=new StringBuilder(string);
+			for(int i=0;i<=string.length();i++){//把()从串0插入到串末，不论重复与否，往set里插入
+				sBuilder.insert(i, "()");
+				set2.add(sBuilder.toString());
+				sBuilder.delete(i, i+2);
+			}
+		}
+		return calculate(set2, n, count+1);
+	}
+}
+
+Discuss:（难以理解）
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList();
+        backtrack(ans, "", 0, 0, n);
+        return ans;
+    }
+
+    public void backtrack(List<String> ans, String cur, int open, int close, int max){
+        if (str.length() == max * 2) {
+            ans.add(cur);
+            return;
+        }
+
+        if (open < max)
+            backtrack(ans, cur+"(", open+1, close, max);
+        if (close < open)
+            backtrack(ans, cur+")", open, close+1, max);
+    }
+}
