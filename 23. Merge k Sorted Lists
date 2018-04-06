@@ -1,0 +1,70 @@
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+My code:(Time Limit Exceeded)the final try
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    ListNode[] lists;
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length==0) return null;
+        if(lists.length==1) return lists[0];
+        this.lists=lists;
+        return calculate(lists[0],1);
+    }
+    ListNode calculate(ListNode list1,int n){
+        ListNode list2=lists[n];
+        ListNode result=new ListNode(-1);
+        ListNode head=result;
+        while(list1!=null&&list2!=null){
+            if(list1.val<list2.val){
+                result.next=list1;
+                list1=list1.next;
+            }
+            else{
+                result.next=list2;
+                list2=list2.next;
+            }
+            result=result.next;
+        }
+        if(list1==null) result.next=list2;
+        else result.next=list1;
+        if(n==lists.length-1)
+            return head.next;
+        return calculate(head.next,++n);
+}
+}
+
+discuss:
+public class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        return mL(lists, 0, lists.length - 1);
+    }
+    
+    private ListNode mL(ListNode[] lists, int l, int r) {
+        if (r < l) return null;
+        if (r == l) return lists[r];
+        
+        int mid = (l + r) / 2;//二分
+        ListNode a = mL(lists, l, mid), b = mL(lists, mid + 1, r);
+        ListNode dmHead = new ListNode(0), cur = dmHead;
+        while (a != null && b != null) {
+            if (a.val < b.val) {
+                cur.next = a;
+                a = a.next;
+            } else {
+                cur.next = b;
+                b = b.next;
+            }
+            cur = cur.next;
+        }
+        cur.next = (a != null) ? a : b;
+        
+        return dmHead.next;
+    }
+}
