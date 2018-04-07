@@ -17,7 +17,7 @@ class Solution {
         this.lists=lists;
         return calculate(lists[0],1);
     }
-    ListNode calculate(ListNode list1,int n){
+    ListNode calculate(ListNode list1,int n){//递归，传递前两个排序好的数组给下一个数组再进行
         ListNode list2=lists[n];
         ListNode result=new ListNode(-1);
         ListNode head=result;
@@ -50,7 +50,7 @@ public class Solution {
         if (r < l) return null;
         if (r == l) return lists[r];
         
-        int mid = (l + r) / 2;//二分
+        int mid = (l + r) / 2;//二分时间复杂度降低
         ListNode a = mL(lists, l, mid), b = mL(lists, mid + 1, r);
         ListNode dmHead = new ListNode(0), cur = dmHead;
         while (a != null && b != null) {
