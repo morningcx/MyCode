@@ -34,7 +34,7 @@ class Solution {
 	}
 }
 
-Discuss:（难以理解）
+Discuss:（大概意思：有左括号就加左括号，右括号在左括号数量之下添加）
 class Solution {
     public List<String> generateParenthesis(int n) {
         List<String> ans = new ArrayList();
@@ -48,9 +48,9 @@ class Solution {
             return;
         }
 
-        if (open < max)
+        if (open < max)//有左括号
             backtrack(ans, cur+"(", open+1, close, max);
-        if (close < open)
+        if (close < open)//没有超出左括号的数量的情况下添加右括号(这里会出现回溯，回溯完成之后会继续进行递归)
             backtrack(ans, cur+")", open, close+1, max);
     }
 }
