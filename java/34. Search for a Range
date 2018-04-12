@@ -1,0 +1,104 @@
+Given an array of integers sorted in ascending order, find the starting and ending position of a given target value.
+
+Your algorithm's runtime complexity must be in the order of O(log n).
+
+If the target is not found in the array, return [-1, -1].
+
+For example,
+Given [5, 7, 7, 8, 8, 10] and target value 8,
+return [3, 4].
+
+My code:
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result={-1,-1};
+        if(nums.length==0) return result;
+        int start=0;
+        int end=nums.length-1;
+        while(start<end){//先求起始点
+            int mid=(start+end)/2;
+            if(nums[mid]<target)
+                start=mid+1;
+            else
+                end=mid;
+        }
+        if(nums[start]==target)
+            result[0]=start;
+        else
+            return result;
+        start=0;//这里其实可以不用重设
+        end=nums.length-1;
+        while(start<end){//求最后点
+            int mid=(start+end)/2;
+            if(nums[mid]<=target){
+                start=mid;
+                if(mid+1==end){//最后两个点，不判断会死循环，discuss的方法更加清晰
+                    if(nums[end]!=target)
+                        end--;
+                    break;
+                }     
+            }
+            else
+                end=mid-1;
+        }
+        result[1]=end;
+        return result;
+    }
+}
+Discuss：
+（1）方法差不多，mid+1那里免去死循环
+vector<int> searchRange(int A[], int n, int target) {
+    int i = 0, j = n - 1;
+    vector<int> ret(2, -1);
+    // Search for the left one
+    while (i < j)
+    {
+        int mid = (i + j) /2;
+        if (A[mid] < target) i = mid + 1;
+        else j = mid;
+    }
+    if (A[i]!=target) return ret;
+    else ret[0] = i;
+    
+    // Search for the right one
+    j = n-1;  // We don't have to set i to 0 the second time.
+    while (i < j)
+    {
+        int mid = (i + j) /2 + 1;	// Make mid biased to the right//这里设置加一操作免去了我的死循环
+        if (A[mid] > target) j = mid - 1;  
+        else i = mid;				// So that this won't make the search range stuck.
+    }
+    ret[1] = j;
+    return ret; 
+}
+
+（2）求target的起始点，再求target后一个的起始点
+public class Solution {
+	public int[] searchRange(int[] A, int target) {
+		int start = Solution.firstGreaterEqual(A, target);
+		if (start == A.length || A[start] != target) {
+			return new int[]{-1, -1};
+		}
+		return new int[]{start, Solution.firstGreaterEqual(A, target + 1) - 1};
+    //不必假设target+1存不存在，计算以后一定是比target大的那个数的起始位置，即使是最后一个也不会溢出
+	}
+
+	//find the first number that is greater than or equal to target.
+	//could return A.length if target is greater than A[A.length-1].
+	//actually this is the same as lower_bound in C++ STL.
+	private static int firstGreaterEqual(int[] A, int target) {//求起始位置
+		int low = 0, high = A.length;
+		while (low < high) {
+			int mid = low + ((high - low) >> 1);
+			//low <= mid < high
+			if (A[mid] < target) {
+				low = mid + 1;
+			} else {
+				//should not be mid-1 when A[mid]==target.
+				//could be mid even if A[mid]>target because mid<high.
+				high = mid;
+			}
+		}
+		return low;
+	}
+}
