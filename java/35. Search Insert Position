@@ -19,7 +19,7 @@ Example 1:
 Input: [1,3,5,6], 0
 Output: 0
 
-My code://和二分法求出现第一次的数值算法一样：Search for a Range里大于x的那个数值的第一个位置
+My code://和二分法求出现第一次的数值算法一样：Search for a Range里求给出数值+1（即后一个比它大的数值）的位置
 class Solution {
     public int searchInsert(int[] nums, int target) {
         int start=0;
