@@ -1,0 +1,69 @@
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+
+(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+
+You are given a target value to search. If found in the array return its index, otherwise return -1.
+
+You may assume no duplicate exists in the array.
+
+My code:
+class Solution {
+    public int search(int[] nums, int target) {
+        if(nums.length==0) return -1;
+        int start=0;
+        int end=nums.length-1;
+        while(start<end){
+            int mid=(start+end)/2;
+            if(nums[mid]<nums[end]) //小于赋值给end，不能向前移，因为它可能本身是最小值
+                end=mid;
+            else  //大于最后一个数往前移一位
+                start=mid+1;
+        }
+        if(target<=nums[nums.length-1]){
+            end=nums.length-1;
+        }
+        else{
+            end=start-1;
+            start=0;
+        }
+        return binary(nums,start,end,target);
+    }
+     int binary(int[] nums,int start,int end,int target){
+         while(start<=end){
+            int mid=(start+end)/2;
+            if(nums[mid]==target) 
+                return mid;
+            if(nums[mid]>target) 
+                end=mid-1;
+            else  
+                start=mid+1;
+        }
+         return -1;
+     }
+}
+discuss:
+public int search(int[] nums, int target) {
+    int minIdx = findMinIdx(nums);
+    if (target == nums[minIdx]) return minIdx;
+    int m = nums.length;
+    int start = (target <= nums[m - 1]) ? minIdx : 0;
+    int end = (target > nums[m - 1]) ? minIdx : m - 1;
+    
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+        if (nums[mid] == target) return mid;
+        else if (target > nums[mid]) start = mid + 1;
+        else end = mid - 1;
+    }
+    return -1;
+}
+
+public int findMinIdx(int[] nums) {
+    int start = 0, end = nums.length - 1;
+    while (start < end) {
+        int mid = start + (end -  start) / 2;
+        if (nums[mid] > nums[end]) start = mid + 1;
+        else end = mid;
+    }
+	return start;
+}
