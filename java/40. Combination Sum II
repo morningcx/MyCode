@@ -1,0 +1,52 @@
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note:
+
+All numbers (including target) will be positive integers.
+The solution set must not contain duplicate combinations.
+Example 1:
+
+Input: candidates = [10,1,2,7,6,1,5], target = 8,
+A solution set is:
+[
+  [1, 7],
+  [1, 2, 5],
+  [2, 6],
+  [1, 1, 6]
+]
+Example 2:
+
+Input: candidates = [2,5,2,1,2], target = 5,
+A solution set is:
+[
+  [1,2,2],
+  [5]
+]
+
+My code:
+through the previous combination sum 1 ,i solved this problem with myself and even the same as the discuss
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> result=new ArrayList<>();
+        calculate(result,new ArrayList<>(),candidates,target,0);
+        return result;
+        
+    }
+    void calculate(List<List<Integer>> list1,List<Integer> list2,int[] nums,int target,int start){
+        if(target==0){
+            list1.add(new ArrayList<>(list2));
+        }
+        else{
+            for(int i=start;i<nums.length;i++){
+                if(target<nums[i]) break;
+                if(i>start&&nums[i]==nums[i-1]) continue;//越过重复的数字，不然结果会重复
+                list2.add(nums[i]);
+                calculate(list1,list2,nums,target-nums[i],i+1);
+                list2.remove(list2.size()-1);
+            }
+        }
+    }
+}
