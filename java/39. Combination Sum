@@ -1,0 +1,74 @@
+Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+
+The same repeated number may be chosen from candidates unlimited number of times.
+
+Note:
+
+All numbers (including target) will be positive integers.
+The solution set must not contain duplicate combinations.
+Example 1:
+
+Input: candidates = [2,3,6,7], target = 7,
+A solution set is:
+[
+  [7],
+  [2,2,3]
+]
+Example 2:
+
+Input: candidates = [2,3,5], target = 8,
+A solution set is:
+[
+  [2,2,2,2],
+  [2,3,3],
+  [3,5]
+]
+
+discuss：//用减法捡完之后是否等于0来判断选择
+（1）
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    //这里最好设置排序
+        List<List<Integer>> list1=new ArrayList<>();
+        calculate(list1,new ArrayList<>(),target,candidates,0);
+        return list1;
+    }
+    void calculate(List<List<Integer>> list1,List<Integer> list2,int target,int[] candidates,int start){
+        if(target>0){
+            for(int i=start;i<candidates.length;i++){
+                list2.add(candidates[i]);
+                calculate(list1,list2,target-candidates[i],candidates,i);
+                list2.remove(list2.size()-1);
+            }
+        }
+        else if(target==0)
+            list1.add(new ArrayList<Integer>(list2));
+        }
+    }
+    （2）
+    class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> ans = new ArrayList<>();
+        search(candidates, 0, target, new Integer[target], 0, ans);
+        return ans;
+    }
+    
+    private void search(int[] candidates, int st,//起始点
+                        int target,
+                        Integer[] paper, int len,//数组长度
+                        List<List<Integer>> ans) {
+        if (target == 0) {
+            Integer[] temp = new Integer[len];
+            System.arraycopy(paper, 0, temp, 0, len);
+            ans.add(Arrays.asList(temp));
+            return;
+        }
+
+        for(int i=st; i<candidates.length; i++) {//2,2,3之后的2,3,2不会出现，因为3后面搜寻大于3的系数，所以不会重复
+            if (target < candidates[i]) break;
+            paper[len] = candidates[i];//数组再次循环从0开始，不用像list那样删除
+            search(candidates, i, target-candidates[i], paper, len+1, ans);
+        }
+    }
+}
