@@ -1,0 +1,84 @@
+Determine if a Sudoku is valid, according to: Sudoku Puzzles - The Rules.
+
+The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
+
+
+A partially filled sudoku which is valid.
+
+Note:
+A valid Sudoku board (partially filled) is not necessarily solvable. Only the filled cells need to be validated.
+My code://foolish
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        int row=board.length;
+        int columns=row;
+        for(int i=0;i<row;i++){
+            Set<Character> set=new HashSet<Character>();
+            for(int j=0;j<columns;j++){
+                if(board[i][j]!='.'){
+                    if(!set.contains(board[i][j]))
+                        set.add(board[i][j]);
+                    else
+                        return false;
+                }
+            }
+        }
+        for(int i=0;i<row;i++){
+            Set<Character> set=new HashSet<Character>();
+            for(int j=0;j<columns;j++){
+                if(board[j][i]!='.'){
+                    if(!set.contains(board[j][i]))
+                        set.add(board[j][i]);
+                    else
+                        return false;
+                } 
+            }
+        }
+        
+        for(int i=0;i<9;i=i+3){
+            for(int j=0;j<9;j=j+3){
+                if(!overcap(board,i,j))
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    boolean overcap(char[][] board,int i,int j){
+        Set<Character> set=new HashSet<Character>();
+        for(int x=i;x<i+3;x++){
+            for(int y=j;y<j+3;y++){
+                if(board[x][y]!='.'){
+                    if(!set.contains(board[x][y]))
+                        set.add(board[x][y]);
+                    else
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+Discuss:
+public boolean isValidSudoku(char[][] board) {
+    for(int i = 0; i<9; i++){
+        HashSet<Character> rows = new HashSet<Character>();
+        HashSet<Character> columns = new HashSet<Character>();
+        HashSet<Character> cube = new HashSet<Character>();
+        for (int j = 0; j < 9;j++){
+            if(board[i][j]!='.' && !rows.add(board[i][j]))
+                return false;
+            if(board[j][i]!='.' && !columns.add(board[j][i]))
+                return false;
+            int RowIndex = 3*(i/3);
+            int ColIndex = 3*(i%3);
+            //i=0即j=0,1,2,3,4,5,6,7,8时映射00,01,02,10,11,12,20,21,22
+            //行=3*(i/3)+ j/3
+            //列=3*(i%3)+ j%3；
+            if(board[RowIndex + j/3][ColIndex + j%3]!='.' && !cube.add(board[RowIndex + j/3][ColIndex + j%3]))
+                return false;
+        }
+    }
+    return true;
+}
