@@ -1,0 +1,51 @@
+Given an unsorted integer array, find the smallest missing positive integer.
+
+Example 1:
+
+Input: [1,2,0]
+Output: 3
+Example 2:
+
+Input: [3,4,-1,1]
+Output: 2
+Example 3:
+
+Input: [7,8,9,11,12]
+Output: 1
+
+well,i can't solve it with myself.
+
+Discuss(1):
+class Solution
+{
+public:
+    int firstMissingPositive(int A[], int n)
+    {
+        for(int i = 0; i < n; ++ i)//把相应的数字交换放到相应的位置（这些数字都小于最大长度）
+            while(A[i] > 0 && A[i] <= n && A[A[i] - 1] != A[i])
+                swap(A[i], A[A[i] - 1]);
+        
+        for(int i = 0; i < n; ++ i)//看是否存在
+            if(A[i] != i + 1)
+                return i + 1;
+        
+        return n + 1;
+    }
+};
+
+Discuss(2):
+public int firstMissingPositive(int[] nums) {
+    for (int i = 0; i < nums.length; i++) {//先把所有小于1和大于最大长度的数置len+1
+        if (nums[i] <= 0 || nums[i] > nums.length) nums[i] = nums.length + 1;
+    }
+    for (int i = 0; i < nums.length; i++) {//把所有存在的数置为复数作为标记
+        int abs = Math.abs(nums[i]);
+        if (abs <= nums.length) {
+            nums[abs - 1] = -Math.abs(nums[abs - 1]);
+        }
+    }
+    for (int i = 0; i < nums.length; i++) {//第一个大于0的数，即不存在的数，就返回
+        if (nums[i] >= 0) return i + 1;
+    }
+    return nums.length + 1;//都存在则返回最大数加1
+}
