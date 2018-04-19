@@ -18,7 +18,7 @@ You must not use any built-in BigInteger library or convert the inputs to intege
 My code：//第一次做有点乱
 class Solution {
     public String multiply(String num1, String num2) {
-        /* 比如：
+                /* 比如：
 		 * 123123*1249=153780627
 		 * 0001108107
 		 * 0004924920
@@ -27,7 +27,7 @@ class Solution {
                  * 0153780627(result，还要去头部的0)
                  * 循环内部的i，j有点乱
 		 */
-        char[] cNum1=num1.toCharArray();
+                char[] cNum1=num1.toCharArray();
 		char[] cNum2=num2.toCharArray();
 		char[] result=new char[cNum1.length+cNum2.length];	
 		for(int j=0;j<cNum2.length;j++){
@@ -44,7 +44,7 @@ class Solution {
 					result[i]=(char) ((n%10)+48);
 				}
 			}
-			if (j>0) add(result, mid);
+			if (j>0) add(result, mid);//第一次越过，mid没值
 		}
 		int count=0;
 		while(result[count]=='0'&&count<result.length-1) count++;//一般只有一个0，但是其中一个乘数为0的时候就不一样。
