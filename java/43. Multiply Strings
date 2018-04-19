@@ -63,7 +63,7 @@ class Solution {
 Discuss:
 public String multiply(String num1, String num2) {
     int m = num1.length(), n = num2.length();
-    int[] pos = new int[m + n];
+    int[] pos = new int[m + n];//创建一个int[]数组会好做很多
    
     for(int i = m - 1; i >= 0; i--) {
         for(int j = n - 1; j >= 0; j--) {
@@ -71,7 +71,7 @@ public String multiply(String num1, String num2) {
             int p1 = i + j, p2 = i + j + 1;//p1是进位的位，这里直接赋值，就不用另外设一个标识jin来标识进位
             int sum = mul + pos[p2];//乘积加上进位数，然后求下一个进位和余数
 
-            pos[p1] += sum / 10;
+            pos[p1] += sum / 10;//这里大于10没关系，因为是整形数组，下次会进行p2的余数操作就变成单个数了
             pos[p2] = (sum) % 10;
         }
     }  
