@@ -1,0 +1,53 @@
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Determine if you are able to reach the last index.
+
+Example 1:
+
+Input: [2,3,1,1,4]
+Output: true
+Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+Example 2:
+
+Input: [3,2,1,0,4]
+Output: false
+Explanation: You will always arrive at index 3 no matter what. Its maximum
+jump length is 0, which makes it impossible to reach the last index.
+
+My code:
+class Solution {
+    public boolean canJump(int[] nums) {
+        int len=nums.length;
+        int jump=1;//分块的循环次数
+        int num=0;//计数
+        int bound=0;//最大接触到的边界
+        int i=0;//判断分块循环次数是否结束
+        while(i<jump){
+            if(bound>=len-1)
+                return true;
+            if(nums[num]+num>bound){
+                bound=nums[num]+num;
+                jump=nums[num];
+                i=0;
+            }
+            else
+                i++;
+            num++;
+        }
+        return false;
+    }
+}
+
+Discuss:
+public boolean canJump(int[] nums) {
+    int dis = 0;
+    for (int i = 0; i <= dis; i++) {
+        dis = Math.max(dis, i + nums[i]);//取最大值就行了，并且i不用重新置0
+        if (dis >= nums.length-1) {
+            return true;
+        }
+    }
+    return false;
+}
