@@ -1,0 +1,90 @@
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+
+Example:
+
+Input: [1,1,2]
+Output:
+[
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
+]
+My code:run long time.
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+     List<List<Integer>> result=new ArrayList<>();
+        calculate(result,nums,nums.length);
+        return result;
+    }
+    void calculate(List<List<Integer>> list,int[] nums,int n){
+        if(n==1&&!list.contains(arrayNums(nums)))
+            list.add(arrayNums(nums));
+        int count=nums.length-n;
+        for(int i=count;i<nums.length;i++){
+            if(i!=count&&nums[count]==nums[i]) continue;
+            swap(nums,count,i);
+            calculate(list,nums,n-1);
+            swap(nums,count,i);
+        }
+    }
+    void swap(int[] nums,int num1,int num2){
+        int num=nums[num1];
+        nums[num1]=nums[num2];
+        nums[num2]=num;
+    }
+    List<Integer> arrayNums(int[] nums){
+        List<Integer> list=new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            list.add(nums[i]);
+        }
+        return list;
+    }
+}
+
+Submissions://从可能的情况来考虑全排列，认为是非常好的算法
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(nums==null || nums.length==0){
+            return result;
+        }
+        dfs(nums, 0, result);
+        return result;
+    }
+    
+    private void dfs(int[] nums, int index, List<List<Integer>> result){
+        if(index==(nums.length-1)){
+            List<Integer> next = new ArrayList<Integer>();
+            for(int i = 0; i<nums.length; i++){
+                next.add(nums[i]);
+            }
+            result.add(next);
+            return;
+        }
+        
+        for(int i = index; i< nums.length; i++){
+            boolean swap = true;
+            for(int j = index; j<i; j++){//从当前起点遍历，所访问到的节点的前面所有节点，是否存在重复，有重复则不进行交换添加list
+                if(nums[j]==nums[i]){//因为起点节点可能拥有值的情况为，后续尝试去访问节点的所有前面节点的所有情况
+                    swap = false;//比如1,3,2,1,2,3现在第一个值只可能为1,2,3,即为所有后续节点的可能情况
+                    break;
+                }
+            }
+            if(swap){
+                swap(nums, index, i);
+                dfs(nums, index+1, result);
+                swap(nums, index, i);
+            }
+        }  
+    }
+    
+    private void swap(int[] nums, int i, int j){
+        if(i==j || nums[i]==nums[j]){
+            return;
+        }
+        
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
