@@ -1,0 +1,80 @@
+Given an array of strings, group anagrams together.
+
+Example:
+
+Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+Output:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+Note:
+
+All inputs will be in lowercase.
+The order of your output does not matter.
+
+My code:
+//这是第一次提交53ms花的时间有点多 12%
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result=new ArrayList<>();
+        Map<String, List<String>> map=new HashMap<>();
+        for(int i=0;i<strs.length;i++){
+            List<String> list=map.get(sort(strs[i]));
+            if(list==null){
+                List<String> l=new ArrayList<>();
+                l.add(strs[i]);
+                map.put(sort(strs[i]),l);
+            }
+            else
+                list.add(strs[i]);
+        }
+        for(List<String> l:map.values())
+            result.add(l);
+        return result;
+    }
+    String sort(String s){//排序以后相同组成的字符串就相同了
+        char[] a=s.toCharArray();转化成字符数组
+		    Arrays.sort(a);//排序
+		    return String.valueOf(a);
+    }
+}
+//第二次看了discuss优化以后24ms 97%
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result=new ArrayList<>();
+        Map<String, List<String>> map=new HashMap<>();
+        for(int i=0;i<strs.length;i++){
+            String sort=sort(strs[i]);
+            List<String> list=map.get(sort);
+            if(list==null){
+                list=new ArrayList<>();
+                map.put(sort,list);
+            }
+                list.add(strs[i]);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+    String sort(String s){
+        char[] a=s.toCharArray();
+		    Arrays.sort(a);
+		    return String.valueOf(a);
+    }
+}
+
+Discuss：//基本思想相同，处理方面比我做得好24ms 97%
+public class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        if (strs == null || strs.length == 0) return new ArrayList<List<String>>();
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        for (String s : strs) {
+            char[] ca = s.toCharArray();
+            Arrays.sort(ca);
+            String keyStr = String.valueOf(ca);
+            if (!map.containsKey(keyStr)) map.put(keyStr, new ArrayList<String>());
+            map.get(keyStr).add(s);//不论存在与否，都会进行添加操作，这里处理的比我好
+        }
+        return new ArrayList<List<String>>(map.values());//直接values()进行初始化复制
+    }
+}
