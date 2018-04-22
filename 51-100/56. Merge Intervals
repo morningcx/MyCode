@@ -1,0 +1,95 @@
+Given a collection of intervals, merge all overlapping intervals.
+
+Example 1:
+
+Input: [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
+Example 2:
+
+Input: [[1,4],[4,5]]
+Output: [[1,5]]
+Explanation: Intervals [1,4] and [4,5] are considerred overlapping.
+
+My code://24ms 92%
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+class Solution {
+    public List<Interval> merge(List<Interval> intervals) {
+        if(intervals.size()<2) return intervals;
+        List<Interval> result=new ArrayList<>();
+        intervals.sort(new Comparator<Interval>(){//排序
+			public int compare(Interval o1, Interval o2) {
+				return o1.start - o2.start;
+			}
+		});
+        result.add(intervals.get(0));
+        for(int i=1;i<intervals.size();i++){
+            Interval now=result.get(result.size()-1);//获取result的最后一个值
+            Interval next=intervals.get(i);
+            if(now.end<next.end){//如果没有包含，则跳过，没有包含则进行是否覆盖的判断
+                if(now.end<next.start)//没有覆盖就直接添加
+                    result.add(next);
+                else
+                    now.end=next.end;//覆盖了，end赋值为当前值的end
+            }
+        }
+        return result;
+    }
+}
+
+Discuss：
+（1）//判断是否覆盖的思想有点不一样
+public List<Interval> merge(List<Interval> intervals) {
+    if (intervals.size() <= 1)
+        return intervals;
+    intervals.sort((i1, i2) -> Integer.compare(i1.start, i2.start));//排序
+    List<Interval> result = new LinkedList<Interval>();
+    int start = intervals.get(0).start;
+    int end = intervals.get(0).end;
+    
+    for (Interval interval : intervals) {
+        if (interval.start <= end) // 当前start和前一个end比较，覆盖就重置end的值
+            end = Math.max(end, interval.end);
+        else {                     // 没有覆盖就添加，对start和end初始化
+            result.add(new Interval(start, end));
+            start = interval.start;
+            end = interval.end;
+        }
+    }
+    // Add the last interval
+    result.add(new Interval(start, end));//添加最后一个值
+    return result;
+}
+（2）
+class Solution {
+    public List<Interval> merge(List<Interval> intervals) {
+        int n = intervals.size();
+        int[] start = new int[n];
+        int[] end = new int[n];
+        List<Interval> result = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            start[i] = intervals.get(i).start;
+            end[i] = intervals.get(i).end;
+        }
+        Arrays.sort(start);//对获取的start和end分别进行排序
+        Arrays.sort(end);
+        //将横向变成竖向的是否覆盖判断（边界范围的限制允许这样做）
+        for(int i = 0; i < n ; i++) {
+            if(i == n - 1 || end[i] < start[i+1]) {
+                result.add(new Interval(start[i], end[i]));
+            } else if(end[i] >= start[i+1]) {
+                start[i+1] = start[i];
+            }
+        }
+        return result;
+
+    }
+}
