@@ -1,0 +1,56 @@
+A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+
+How many possible unique paths are there?
+
+
+Above is a 7 x 3 grid. How many possible unique paths are there?
+
+Note: m and n will be at most 100.
+
+Example 1:
+
+Input: m = 3, n = 2
+Output: 3
+Explanation:
+From the top-left corner, there are a total of 3 ways to reach the bottom-right corner:
+1. Right -> Right -> Down
+2. Right -> Down -> Right
+3. Down -> Right -> Right
+Example 2:
+
+Input: m = 7, n = 3
+Output: 28
+
+My code://1ms 87%
+class Solution {
+    public int uniquePaths(int m, int n) {
+        if(m==1||n==1) return 1;
+        int[] matrix=new int[n];//从最后一列开始赋值
+        for(int j=m-1;j>=0;j--)
+            for(int i=n-1;i>=0;i--)
+                if(j==m-1||i==n-1)//最下层和最右层都为1
+                    matrix[i]=1;
+                else
+                    matrix[i]+=matrix[i+1];//其他都是下面右面可能值之和
+        return matrix[0];
+    }
+}
+
+Discuss://数学方法
+If you mark the south move as '1' and the east move as '0'. This problem shall be equal to :
+Given (m+n-2) bits. you can fill in '1' for (m-1) times and '0' for (n-1) times, what is the number of different numbers?
+the result is clear that the formula shall be C(m-1)(m+n-2), where m-1 is the superscript behind C and m+n-2 is the subscript behind C.
+To avoid overflow, I write the program in this manner.
+
+public class Solution {
+
+public int uniquePaths(int m, int n) {
+
+     long result = 1;
+     for(int i=0;i<Math.min(m-1,n-1);i++)
+         result = result*(m+n-2-i)/(i+1); 
+     return (int)result;
+
+}
