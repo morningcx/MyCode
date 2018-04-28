@@ -58,6 +58,7 @@ class Solution {
         HashMap<Character, Integer> map = new HashMap<Character, Integer>();
         int max=0;
         for (int i=0, j=0; i<s.length(); ++i){
+            //重复出现的字母取位置最大的（abcdedc）c重复的时候j的值仍然是d+1
             if (map.containsKey(s.charAt(i))){ //存在元素，则记录之前存在元素位置j的最大值，因为map没有删除元素，所以有可能
                 j = Math.max(j,map.get(s.charAt(i))+1);//重复出现之前已经应该如（1）一样删除的元素，故取j的最大值
             }
