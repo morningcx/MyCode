@@ -1,6 +1,17 @@
+/**
 Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+Example:
 
-My code:(Time Limit Exceeded)the final try
+Input:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+Output: 1->1->2->3->4->4->5->6
+*/
+
+My code://时间复杂度较高
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -40,12 +51,13 @@ class Solution {
 }
 }
 
-discuss:
+Discuss:
 public class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         return mL(lists, 0, lists.length - 1);
     }
-    
+    //尽量合并的数组链表长度差不多，例如数组有6个链表，每个链表1个元素
+    //按照我的方法，遍历次数:2+3+4+5+6=20，以下方法:2+2+3+3+6=15
     private ListNode mL(ListNode[] lists, int l, int r) {
         if (r < l) return null;
         if (r == l) return lists[r];
