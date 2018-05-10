@@ -44,7 +44,9 @@ class Solution {
         return first.next;
     }
 }
-Discuss://先移动指针到要反转节点前一个节点处，然后在范围内进行反转操作
+Discuss:
+（1）
+//先移动指针到要反转节点前一个节点处，然后在范围内进行反转操作
 //反转操作是将后一个节点进行插入操作
 // first reversing : dummy->1 - 3 - 2 - 4 - 5; pre = 1, start = 2, then = 4 
 // second reversing: dummy->1 - 4 - 3 - 2 - 5; pre = 1, start = 2, then = 5 (finish)
@@ -77,3 +79,22 @@ public ListNode reverseBetween(ListNode head, int m, int n) {
     return dummy.next;
     
 }
+（2）C++
+class Solution {  
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        ListNode* new_head = new ListNode(0);
+        new_head -> next = head;
+        ListNode* pre = new_head;
+        for (int i = 0; i < m - 1; i++)
+            pre = pre -> next;//链表头前一个
+        ListNode* cur = pre -> next;//要翻转链表的头部
+        for (int i = 0; i < n - m; i++) {
+            ListNode* move = cur -> next; //因为每次反转后cur都会向后移一位，即后面一位就是要插入到头部的节点
+            cur -> next = move -> next;
+            move -> next = pre -> next;
+            pre -> next = move;
+        }
+        return new_head -> next;
+    }
+};
