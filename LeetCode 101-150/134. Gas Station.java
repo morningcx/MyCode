@@ -47,21 +47,20 @@ My code://1ms 71%
 //求每一站剩余汽油总和，总和小于0说明没有结果，大于0返回第一个可以后续有持续汽油的车站
 class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        //-2,-2,-2,3,-4,1,6
         int sum=0;
         int poSum=0;
         int poIndex=-1;
         for(int i=0;i<gas.length;i++){
-            int left=gas[i]-cost[i];
-            if(poIndex==-1&&left>=0)
+            int left=gas[i]-cost[i];//求剩余汽油
+            if(poIndex==-1&&left>=0)//若存在正数，则越过，若不存在正数并且当前值为正数
                 poIndex=i;
-            if(poIndex!=-1)
+            if(poIndex!=-1)//存在正数，求正数后续之和
                 poSum+=left;
-            if(poSum<0){
+            if(poSum<0){//后续之和为0则说明不能当第一个车站
                poIndex=-1;
                poSum=0; 
             }
-            sum+=left;
+            sum+=left;//求和
         }
         return sum<0?-1:poIndex;
     }
@@ -77,10 +76,10 @@ class Solution {
         for(int i=0; i<gas.length; i++) {
             gasSum += gas[i];
             costSum += cost[i];
-            tank += (gas[i] - cost[i]);
-            if(tank < 0){
+            tank += (gas[i] - cost[i]);//正数后续之和
+            if(tank < 0){//当为负时不论当前值为负还是后续之和为负，都将重置
                 tank = 0;
-                start=i+1;  
+                start=i+1;//下一个数作为下一个正数，如果下一个为负，则又重置，为正则求和继续
             }
         }
         if(gasSum < costSum) {
