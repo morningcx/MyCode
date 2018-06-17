@@ -47,11 +47,16 @@ class Solution {
 
 Discuss：
 （1）//将A-1，Z-26假设成A-0，Z-25
+//每次添加位数时要减1
+//因为26一般进制数转换从0,1,2,3,4...25 -> 10(26)
+//所以一开始的数可以表示成00,01,02,03...25 -> 10(26)
+//但是现在从A,B,C..Z之后的AA(26)开始，它的第二位是从0(A)开始的，而不是和正常进制数一样，进位以后要从1开始
+//所以每次添加每一位的数的时候，需要-1操作，把原本除出来的结果-1，从而会从0开始判断相应字母
 public class Solution {
     public String convertToTitle(int n) {
         StringBuilder result = new StringBuilder();
         while (n > 0) {
-            n--;//每次除完要减1
+            n--;//每次添加位数时要减1
             result.append((char)('A' + n % 26));
             n /= 26;
         }
