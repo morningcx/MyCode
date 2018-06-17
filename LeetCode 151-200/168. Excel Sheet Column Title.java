@@ -46,12 +46,20 @@ class Solution {
 }
 
 Discuss：
-（1）//将A-1，Z-26假设成A-0，Z-25
+（1）
 //每次添加位数时要减1
 //因为26一般进制数转换从0,1,2,3,4...25 -> 10(26)
 //所以一开始的数可以表示成00,01,02,03...25 -> 10(26)
 //但是现在从A,B,C..Z之后的AA(26)开始，它的第二位是从0(A)开始的，而不是和正常进制数一样，进位以后要从1开始
 //所以每次添加每一位的数的时候，需要-1操作，把原本除出来的结果-1，从而会从0开始判断相应字母
+//然后原来的A(1)B(2)C(3)..Z(26)对应A(0)B(1)C(2)..Z(25)
+/**
+ Why --n instead of (n - 1)? 
+ because even the current digit is 26, it should not have a carry 1 to the next digit. e.g. 52 -> AZ not BZ.
+
+(n - 1) makes it 52/26 = 2 (represents 'B') -> BZ ->false
+--n makes it 51/26 = 1 (represents 'A') -> AZ -> true
+*/
 public class Solution {
     public String convertToTitle(int n) {
         StringBuilder result = new StringBuilder();
