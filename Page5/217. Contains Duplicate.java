@@ -61,7 +61,7 @@ Submissions://不太规范的方法，取最大最小值，创建一个很大的
                 return true;
             }
             //将boolean该偏移位置设置为true
-            results[index] = true;
+            results[index] = true; 
         }
         return false;
     }
