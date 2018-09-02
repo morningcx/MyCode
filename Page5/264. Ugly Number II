@@ -1,0 +1,52 @@
+//1
+class Solution {
+    public int nthUglyNumber(int n) {
+        int[] nums = new int[n];
+        nums[0] = 1;
+        int index2 = 0, index3 = 0, index5 = 0;
+        for (int i = 1; i < n; ++i) {
+            nums[i] = Math.min(nums[index2] * 2, Math.min(nums[index3] * 3, nums[index5] * 5));
+            if (nums[i] == nums[index2] * 2) ++index2;
+            if (nums[i] == nums[index3] * 3) ++index3;
+            if (nums[i] == nums[index5] * 5) ++index5;
+        }
+        return nums[n - 1];
+    }
+}
+//2
+public class Solution {
+    public int nthUglyNumber(int n) {
+        TreeSet<Long> ans = new TreeSet<>();
+        ans.add(1L);
+        for (int i = 0; i < n - 1; ++i) {
+            long first = ans.pollFirst();
+            ans.add(first * 2);
+            ans.add(first * 3);
+            ans.add(first * 5);
+        }
+        return ans.first().intValue();
+    }
+}
+//3
+ public int nthUglyNumber(int n) {
+        PriorityQueue<Long> heap = new PriorityQueue<>();
+        heap.add(1L); 
+        long count = 0, currMin = 0;
+        while(count < n){
+            currMin = heap.poll();
+            count++;
+            if(currMin * 2 > Integer.MAX_VALUE) break;
+            heap.add(currMin * 2);
+            if(currMin % 2 != 0){              
+                heap.add(currMin * 3);
+                if(currMin % 3 != 0){                    
+                    heap.add(currMin * 5);
+                }
+            }
+        }
+        while(count < n){
+            currMin = heap.poll();
+            count++;
+        }
+        return (int)currMin;
+    }    
