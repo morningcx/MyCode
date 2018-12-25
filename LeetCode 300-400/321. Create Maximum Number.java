@@ -96,10 +96,12 @@ public boolean greater(int[] nums1, int i, int[] nums2, int j) {
 }
 public int[] maxArray(int[] nums, int k) {
     int n = nums.length;
-    int[] ans = new int[k];
+    int[] ans = new int[k]; // 先定义一个固定长度的数组
     for (int i = 0, j = 0; i < n; ++i) {
-        while (n - i + j > k && j > 0 && ans[j - 1] < nums[i]) j--;
-        if (j < k) ans[j++] = nums[i];
+	// 这里把数组当做一个栈，规定范围内倒序遍历数组，如果遇到比当前栈顶数字大的元素，
+	// 则索引向前移（相当于出栈，后续数字小的将会覆盖掉路过的索引）
+        while (n - i + j > k && j > 0 && ans[j - 1] < nums[i]) j--; 
+        if (j < k) ans[j++] = nums[i]; // 入栈，j < k的判断要有，因为i有可能比k大
     }
     return ans;
 }
